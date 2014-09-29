@@ -27,8 +27,13 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
 	config.vm.provision :chef_solo do |chef|
 		chef.cookbooks_path = [ "cookbooks", "site-cookbooks" ]
-
 		chef.log_level = :debug
+
+		chef.add_recipe 'skorpi_typo3neos'
+		chef.json = {
+			:skorpi_typo3neos => {
+			}
+		}
 	end
 
 	config.vm.provider "virtualbox" do |v|
