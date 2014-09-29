@@ -1,16 +1,27 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+#################################
 # Installation specific settings
+################################
 $project_name = 'neos'
 $ip_address = '192.168.38.17'
 $neos_rootpath = '/var/www/myneos'
+# This is the host of your live site. A vagrant and behat subdomain will be added automatically.
+$hostname = 'myneos.com'
 
+
+#######################
 # box and chef versions
 # keep them synced with the versions in the cheffile, if you want to avoid trouble due to chef version incompatibilities
+#######################
 $box = "hashicorp/precise64"
 $box_version = "1.1.0"
 $chef_version = "11.16.0"
 
-# -*- mode: ruby -*-
-# vi: set ft=ruby :
+#######################
+$vagrant_hostname = 'vagrant.' + $hostname
+
 
 VAGRANTFILE_API_VERSION = "2"
 
@@ -26,14 +37,20 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 	config.vm.network :private_network, ip: $ip_address
 	config.vm.synced_folder "../../", $neos_rootpath, create: "true", type: "nfs"
 
+	# automatically manage /etc/hosts on hosts and guests
+	config.vm.hostname = $vagrant_hostname
+	config.hostmanager.enabled = true
+	config.hostmanager.manage_host = true
+
 	config.vm.provision :chef_solo do |chef|
 		chef.cookbooks_path = [ "cookbooks", "site-cookbooks" ]
-		chef.log_level = :debug
+		# chef.log_level = :debug
 
 		chef.add_recipe 'skorpi_typo3neos'
 		chef.json = {
 			:skorpi_typo3neos => {
-				:rootpath => $neos_rootpath
+				:rootpath => $neos_rootpath,
+				:hostname => $vagrant_hostname
 			}
 		}
 	end

@@ -1,6 +1,10 @@
 SITE
   remote: http://community.opscode.com/api/v1
   specs:
+    apache2 (2.0.0)
+      iptables (>= 0.0.0)
+      logrotate (>= 0.0.0)
+      pacman (>= 0.0.0)
     apt (2.6.0)
     build-essential (2.0.6)
     chef-sugar (2.3.0)
@@ -17,8 +21,11 @@ SITE
       yum-epel (>= 0.0.0)
     iis (2.1.5)
       windows (>= 1.2.6)
+    iptables (0.14.0)
+    logrotate (1.7.0)
     mysql (5.5.3)
       yum-mysql-community (>= 0.0.0)
+    pacman (1.1.1)
     php (1.4.6)
       build-essential (>= 0.0.0)
       iis (>= 0.0.0)
@@ -42,7 +49,9 @@ SITE
       yum (>= 3.0)
 
 DEPENDENCIES
+  apache2 (>= 0)
   apt (>= 0)
   composer (>= 0)
   git (>= 0)
+  php (>= 0)
 

@@ -1,0 +1,11 @@
+<VirtualHost *:80>
+	ServerName <%= @params[:server_name] %>
+	DocumentRoot <%= @params[:docroot] %>
+
+	SetEnv FLOW_CONTEXT <%= @params[:context] %>
+
+	<Directory <%= @params[:directory] %>>
+		Options FollowSymLinks
+		AllowOverride FileInfo Indexes Options=All,MultiViews
+	</Directory>
+</VirtualHost>
