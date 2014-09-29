@@ -1,6 +1,7 @@
 # Installation specific settings
 $project_name = 'neos'
 $ip_address = '192.168.38.17'
+$neos_rootpath = '/var/www/myneos'
 
 # box and chef versions
 # keep them synced with the versions in the cheffile, if you want to avoid trouble due to chef version incompatibilities
@@ -23,7 +24,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 	config.ssh.forward_agent = true
 
 	config.vm.network :private_network, ip: $ip_address
-	config.vm.synced_folder "../../", "/var/www/typo3flow", create: "true", type: "nfs"
+	config.vm.synced_folder "../../", $neos_rootpath, create: "true", type: "nfs"
 
 	config.vm.provision :chef_solo do |chef|
 		chef.cookbooks_path = [ "cookbooks", "site-cookbooks" ]
@@ -32,6 +33,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 		chef.add_recipe 'skorpi_typo3neos'
 		chef.json = {
 			:skorpi_typo3neos => {
+				:rootpath => $neos_rootpath
 			}
 		}
 	end
