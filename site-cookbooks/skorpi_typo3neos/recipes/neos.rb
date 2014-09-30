@@ -10,8 +10,24 @@ execute "composer install --quiet" do
 	cwd node['skorpi_typo3neos']['rootpath']
 end
 
+directory "#{node['skorpi_typo3neos']['rootpath']}/Configuration/Development/" do
+  action :create
+end
 
-# execute "install TYPO3 Neos" do
-# 	command "composer install --quiet"
-# 	cwd "/var/www/typo3flow"
-# end
+template "#{node['skorpi_typo3neos']['rootpath']}/Configuration/Development/Settings.yaml" do
+  source "Development.Settings.yaml.erb"
+  variables(
+  	:database_name => node['skorpi_typo3neos']['database_name'],
+  	:database_password => node['mysql']['server_root_password']
+  )
+  action :create
+end
+
+execute "set some heavy filepermissions for nfs" do
+	command "chgrp -R www-data . && chmod -R 2777 ."
+	cwd node['skorpi_typo3neos']['rootpath']
+end
+
+execute "./flow doctrine:migrate" do
+	cwd node['skorpi_typo3neos']['rootpath']
+end

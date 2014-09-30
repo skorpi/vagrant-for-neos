@@ -8,6 +8,19 @@
 
 include_recipe "php"
 
+packages=[
+	"php5-mysql",
+]
+
+case node[:platform]
+	when "debian","ubuntu"
+		packages.each do |pkg|
+			package pkg do
+			action :upgrade
+		end
+	end
+end
+
 cookbook_file "/etc/php5/conf.d/php_dateTimeZone.ini" do
 	source "php_dateTimeZone.ini"
 	mode 0655

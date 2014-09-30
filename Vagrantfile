@@ -7,6 +7,7 @@
 $project_name = 'neos'
 $ip_address = '192.168.38.17'
 $neos_rootpath = '/var/www/myneos'
+$database_name = 'myneos'
 # This is the host of your live site. A vagrant and behat subdomain will be added automatically.
 $hostname = 'myneos.com'
 
@@ -50,8 +51,16 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 		chef.json = {
 			:skorpi_typo3neos => {
 				:rootpath => $neos_rootpath,
-				:hostname => $vagrant_hostname
-			}
+				:hostname => $vagrant_hostname,
+				:database_name => $database_name
+			},
+			:mysql  => {
+				:server_root_password   => "root",
+				:server_repl_password   => "root",
+				:server_debian_password => "root",
+				:allow_remote_root      => true,
+				:bind_address           => "127.0.0.1"
+			},
 		}
 	end
 
