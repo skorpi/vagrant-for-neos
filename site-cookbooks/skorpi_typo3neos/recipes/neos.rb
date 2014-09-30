@@ -31,3 +31,7 @@ end
 execute "./flow doctrine:migrate" do
 	cwd node['skorpi_typo3neos']['rootpath']
 end
+
+execute "./flow site:import --package-key #{node['skorpi_typo3neos']['site_package']}" do
+	cwd node['skorpi_typo3neos']['rootpath']
+end

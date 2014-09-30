@@ -10,6 +10,7 @@ $neos_rootpath = '/var/www/myneos'
 $database_name = 'myneos'
 # This is the host of your live site. A vagrant and behat subdomain will be added automatically.
 $hostname = 'myneos.com'
+$site_package = 'TYPO3.NeosDemoTypo3Org'
 
 
 #######################
@@ -52,7 +53,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 			:skorpi_typo3neos => {
 				:rootpath => $neos_rootpath,
 				:hostname => $vagrant_hostname,
-				:database_name => $database_name
+				:database_name => $database_name,
+				:site_package => $site_package
 			},
 			:mysql  => {
 				:server_root_password   => "root",
