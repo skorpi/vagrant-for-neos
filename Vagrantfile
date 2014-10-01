@@ -1,18 +1,37 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
-#################################
-# Installation specific settings
-################################
-$project_name = 'neos'
-$ip_address = '192.168.38.17'
-$neos_rootpath = '/var/www/myneos'
-$database_name = 'myneos'
-$behat_database_name = 'testing_behat'
-# This is the host of your live site. A vagrant and behat subdomain will be added automatically.
-$hostname = 'myneos.com'
-$site_package = 'TYPO3.NeosDemoTypo3Org'
-$use_nfs = TRUE
+settings={
+	####################################################################################
+	# Installation specific settings you probably want to override for each installation
+	####################################################################################
+	'project_name' => 'neos',
+	'ip_address' => '192.168.38.17',
+	# This is the host of your live site. A vagrant and behat subdomain will be added automatically.
+	'hostname' => 'myneos.com',
+	'site_package' => 'TYPO3.NeosDemoTypo3Org',
+
+	##########################################################################################
+	# Installation specific settings you probably don't want to override for each installation
+	##########################################################################################
+	'use_nfs' => TRUE,
+	'neos_rootpath' => '/var/www/myneos',
+	'database_name' => 'myneos',
+	'behat_database_name' => 'testing_behat',
+}
+
+##################################################
+# Override settings based on environment variables
+##################################################
+
+puts '------ Overriding Settings with environment variables -------'
+settings.each do |i, setting|
+	if(ENV['VAGRANT_' + i])
+		puts '------ Override "' + i + '" with "' + ENV['VAGRANT_' + i] + '" -----'
+		settings[i] = ENV['VAGRANT_' + i]
+	end
+end
+
 
 #######################
 # box and chef versions
@@ -22,8 +41,7 @@ $box = "hashicorp/precise64"
 $box_version = "1.1.0"
 $chef_version = "11.16.0"
 
-#######################
-$vagrant_hostname = 'vagrant.' + $hostname
+$vagrant_hostname = 'vagrant.' + settings['hostname']
 
 
 VAGRANTFILE_API_VERSION = "2"
@@ -37,13 +55,13 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
 	config.ssh.forward_agent = true
 
-	config.vm.network :private_network, ip: $ip_address
+	config.vm.network :private_network, ip: settings['ip_address']
 
-	if $use_nfs === TRUE
+	if settings['use_nfs'] === TRUE
 		puts "----- Using nfs shared folders ---------"
-		config.vm.synced_folder "../../", $neos_rootpath, create: "true", type: "nfs"
+		config.vm.synced_folder "../../", settings['neos_rootpath'], create: "true", type: "nfs"
 	else
-		config.vm.synced_folder "../../", $neos_rootpath, create: "true", type: "rsync", user: "vagrant", group: "www-data", rsync__exclude: ["Web/", ".git"]
+		config.vm.synced_folder "../../", settings['neos_rootpath'], create: "true", type: "rsync", user: "vagrant", group: "www-data", rsync__exclude: ["Web/", ".git"]
 	end
 
 	# automatically manage /etc/hosts on hosts and guests
@@ -58,12 +76,12 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 		chef.add_recipe 'skorpi_typo3neos'
 		chef.json = {
 			:skorpi_typo3neos => {
-				:rootpath => $neos_rootpath,
+				:rootpath => settings['neos_rootpath'],
 				:hostname => $vagrant_hostname,
-				:database_name => $database_name,
-				:behat_database_name => $behat_database_name,
-				:site_package => $site_package,
-				:use_nfs => $use_nfs
+				:database_name => settings['database_name'],
+				:behat_database_name => settings['behat_database_name'],
+				:site_package => settings['site_package'],
+				:use_nfs => settings['use_nfs']
 			},
 			:mysql  => {
 				:server_root_password   => "root",
@@ -76,7 +94,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 	end
 
 	config.vm.provider "virtualbox" do |v|
-		v.name = $project_name
+		v.name = settings['project_name']
 		v.customize ["modifyvm", :id, "--memory", "2048"]
 	end
 end
