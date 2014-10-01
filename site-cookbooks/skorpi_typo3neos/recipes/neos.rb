@@ -23,9 +23,15 @@ template "#{node['skorpi_typo3neos']['rootpath']}/Configuration/Development/Sett
   action :create
 end
 
-execute "set some heavy filepermissions for nfs" do
-	command "chgrp -R www-data . && chmod -R 2777 ."
-	cwd node['skorpi_typo3neos']['rootpath']
+if node['skorpi_typo3neos']['use_nfs'] === TRUE
+	execute "set some heavy filepermissions for nfs as setfilepermissions doesn't work" do
+		command "chgrp -R www-data . && chmod -R 2777 ."
+		cwd node['skorpi_typo3neos']['rootpath']
+	end
+else
+	execute "./flow flow:core:setfilepermissions vagrant www-data www-data" do
+		cwd node['skorpi_typo3neos']['rootpath']
+	end
 end
 
 execute "./flow doctrine:migrate" do

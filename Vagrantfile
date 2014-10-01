@@ -12,7 +12,7 @@ $behat_database_name = 'testing_behat'
 # This is the host of your live site. A vagrant and behat subdomain will be added automatically.
 $hostname = 'myneos.com'
 $site_package = 'TYPO3.NeosDemoTypo3Org'
-
+$use_nfs = TRUE
 
 #######################
 # box and chef versions
@@ -38,7 +38,13 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 	config.ssh.forward_agent = true
 
 	config.vm.network :private_network, ip: $ip_address
-	config.vm.synced_folder "../../", $neos_rootpath, create: "true", type: "nfs"
+
+	if $use_nfs === TRUE
+		puts "----- Using nfs shared folders ---------"
+		config.vm.synced_folder "../../", $neos_rootpath, create: "true", type: "nfs"
+	else
+		config.vm.synced_folder "../../", $neos_rootpath, create: "true", type: "rsync", user: "vagrant", group: "www-data", rsync__exclude: ["Web/", ".git"]
+	end
 
 	# automatically manage /etc/hosts on hosts and guests
 	config.vm.hostname = $vagrant_hostname
@@ -56,7 +62,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 				:hostname => $vagrant_hostname,
 				:database_name => $database_name,
 				:behat_database_name => $behat_database_name,
-				:site_package => $site_package
+				:site_package => $site_package,
+				:use_nfs => $use_nfs
 			},
 			:mysql  => {
 				:server_root_password   => "root",
