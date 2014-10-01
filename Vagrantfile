@@ -8,6 +8,7 @@ $project_name = 'neos'
 $ip_address = '192.168.38.17'
 $neos_rootpath = '/var/www/myneos'
 $database_name = 'myneos'
+$behat_database_name = 'testing_behat'
 # This is the host of your live site. A vagrant and behat subdomain will be added automatically.
 $hostname = 'myneos.com'
 $site_package = 'TYPO3.NeosDemoTypo3Org'
@@ -54,6 +55,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 				:rootpath => $neos_rootpath,
 				:hostname => $vagrant_hostname,
 				:database_name => $database_name,
+				:behat_database_name => $behat_database_name,
 				:site_package => $site_package
 			},
 			:mysql  => {
