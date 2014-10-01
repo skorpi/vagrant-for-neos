@@ -10,6 +10,8 @@ include_recipe "php"
 
 packages=[
 	"php5-mysql",
+	"php5-curl",
+	"php5-xdebug"
 ]
 
 case node[:platform]
@@ -30,6 +32,13 @@ cookbook_file "/etc/php5/conf.d/php_maxValues.ini" do
 	source "php_maxValues.ini"
 	mode 0655
 end
+
+cookbook_file "/etc/php5/conf.d/php_xdebug.ini" do
+	source "php_xdebug.ini"
+	mode 0655
+end
+
+
 
 execute "reload apache" do
 	command "/etc/init.d/apache2 reload"
