@@ -6,8 +6,11 @@
 #
 # Install neos
 
-execute "composer install --quiet" do
-	cwd node['skorpi_typo3neos']['rootpath']
+# Install via composer only if nfs is used. For rsync it had to be done on the host machine.
+if node['skorpi_typo3neos']['use_nfs'] === TRUE
+	execute "composer install --quiet" do
+		cwd node['skorpi_typo3neos']['rootpath']
+	end
 end
 
 directory "#{node['skorpi_typo3neos']['rootpath']}/Configuration/Development/" do
