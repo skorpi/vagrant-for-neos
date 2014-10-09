@@ -37,8 +37,8 @@ end
 # box and chef versions
 # keep them synced with the versions in the cheffile, if you want to avoid trouble due to chef version incompatibilities
 #######################
-$box = "hashicorp/precise64"
-$box_version = "1.1.0"
+$box = "ubuntu/trusty64"
+$box_version = "14.04"
 $chef_version = "11.16.0"
 
 $vagrant_hostname = 'vagrant.' + settings['hostname']

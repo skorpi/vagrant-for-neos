@@ -23,22 +23,21 @@ case node[:platform]
 	end
 end
 
-cookbook_file "/etc/php5/conf.d/php_dateTimeZone.ini" do
-	source "php_dateTimeZone.ini"
-	mode 0655
+ini_files=[
+	"xdebug_remote",
+	"dateTimeZone",
+	"maxValues"
+]
+
+ini_files.each do |ini_file|
+	cookbook_file "/etc/php5/mods-available/#{ini_file}.ini" do
+		source "#{ini_file}.ini"
+		mode 644
+	end
+	execute "enable php-configuration" do
+		command "php5enmod #{ini_file}"
+	end
 end
-
-cookbook_file "/etc/php5/conf.d/php_maxValues.ini" do
-	source "php_maxValues.ini"
-	mode 0655
-end
-
-cookbook_file "/etc/php5/conf.d/php_xdebug.ini" do
-	source "php_xdebug.ini"
-	mode 0655
-end
-
-
 
 execute "reload apache" do
 	command "/etc/init.d/apache2 reload"
