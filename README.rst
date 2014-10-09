@@ -57,19 +57,19 @@ If you want to override f.e. the hostname or the name of the vagrant box you mig
 Example vagrant.sh Script::
 
   #! /bin/bash
-  
+
   if [ ! -d Build/Vagrant ]; then
   	echo clone vagrant setup
   	git clone https://github.com/skorpi/vagrant-for-neos.git Build/Vagrant
   fi
-  
+
   export VAGRANT_project_name="myproject"
   export VAGRANT_ip_address="192.168.38.19"
   # Add your live hostname here. The subdomain (vagrant.) will be added automatically
   export VAGRANT_hostname="the.host.tld"
-  
+
   cd Build/Vagrant
-  
+
   vagrant $1 $2 $3
 
 Start the installation with the command::
@@ -82,7 +82,7 @@ Hosts File
 Usually the hostamanager will take care of your hosts file. If that doesn't work, add the following line to your hosts file::
 
   192.168.38.17 vagrant.myneos.com behat.vagrant.myneos.com
-  
+
 Of course you might have to change the ip-address and host accordingly.
 
 Folder Syncing / Windows
@@ -101,5 +101,5 @@ Using rsync as option you have to run ``composer install`` on your host machine 
 
 Rsync is syncing in one direction only (Host to Guest). Flow is creating some files (f.e. database migrations, cached code, kickstarted code).
 With nfs I have this files in my Phpstorm on the fly. That's why I like nfs more and it is the default option.
-You will have to type your hosts logon password using nfs. To avoid this see http://docs.vagrantup.com/v2/synced-folders/nfs.html.  
+You will have to type your hosts logon password using nfs. To avoid this see http://docs.vagrantup.com/v2/synced-folders/nfs.html.
 
