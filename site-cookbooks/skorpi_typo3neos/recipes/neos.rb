@@ -52,3 +52,15 @@ end
 execute "./flow site:import --package-key #{node['skorpi_typo3neos']['site_package']}" do
 	cwd node['skorpi_typo3neos']['rootpath']
 end
+
+execute "create vagrant admin user" do
+	command "./flow user:create --roles Administrator --username vagrant --password vagrant --first-name Vagrant --last-name Vagrant"
+	cwd node['skorpi_typo3neos']['rootpath']
+	not_if "#{node['skorpi_typo3neos']['rootpath']}/flow user:show --username vagrant"
+end
+
+execute "create vagrant editor user" do
+	command "./flow user:create --roles Editor --username vagranteditor --password vagrant --first-name Vagrant --last-name Editor"
+	cwd node['skorpi_typo3neos']['rootpath']
+	not_if "#{node['skorpi_typo3neos']['rootpath']}/flow user:show --username vagranteditor"
+end
