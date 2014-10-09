@@ -67,7 +67,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 		puts "----- Using nfs shared folders ---------"
 		config.vm.synced_folder "../../", settings['neos_rootpath'], create: "true", type: "nfs"
 	else
-		config.vm.synced_folder "../../", settings['neos_rootpath'], create: "true", type: "rsync", user: "vagrant", group: "www-data", rsync__exclude: ["Web/", ".git"]
+		config.vm.synced_folder "../../", settings['neos_rootpath'], create: "true", type: "rsync", user: "vagrant", group: "www-data", rsync__exclude: [".git"]
 	end
 
 	# automatically manage /etc/hosts on hosts and guests
