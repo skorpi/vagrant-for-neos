@@ -51,6 +51,12 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 	config.vm.box = $box
 	config.vm.box_version = $box_version
 
+	if Vagrant.has_plugin?("vagrant-cachier")
+		# Configure cached packages to be shared between instances of the same base box.
+		# More info on http://fgrehm.viewdocs.io/vagrant-cachier/usage
+		config.cache.scope = :box
+	end
+
 	config.omnibus.chef_version = $chef_version
 
 	config.ssh.forward_agent = true
