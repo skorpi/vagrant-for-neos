@@ -37,6 +37,14 @@ else
 	end
 end
 
+execute "./flow flow:cache:flush" do
+	cwd node['skorpi_typo3neos']['rootpath']
+end
+
+execute "./flow flow:cache:warmup" do
+	cwd node['skorpi_typo3neos']['rootpath']
+end
+
 execute "./flow doctrine:migrate" do
 	cwd node['skorpi_typo3neos']['rootpath']
 end
