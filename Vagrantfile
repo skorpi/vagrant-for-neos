@@ -74,6 +74,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 	config.vm.hostname = $vagrant_hostname
 	config.hostmanager.enabled = true
 	config.hostmanager.manage_host = true
+	config.hostmanager.aliases = 'behat.' + $vagrant_hostname
 
 	config.vm.provision :chef_solo do |chef|
 		chef.cookbooks_path = [ "cookbooks", "site-cookbooks" ]
