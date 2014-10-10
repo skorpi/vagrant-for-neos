@@ -32,7 +32,7 @@ ini_files=[
 ini_files.each do |ini_file|
 	cookbook_file "/etc/php5/mods-available/#{ini_file}.ini" do
 		source "#{ini_file}.ini"
-		mode 644
+		mode "0644"
 	end
 	execute "enable php-configuration" do
 		command "php5enmod #{ini_file}"
@@ -42,7 +42,7 @@ end
 # xdebug-autostart-configuration is not enabled by default
 cookbook_file "/etc/php5/mods-available/xdebug_autostart.ini" do
 	source "xdebug_autostart.ini"
-	mode 644
+	mode "0644"
 end
 
 execute "reload apache" do
