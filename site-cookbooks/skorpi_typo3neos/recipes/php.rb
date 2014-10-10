@@ -39,6 +39,12 @@ ini_files.each do |ini_file|
 	end
 end
 
+# xdebug-autostart-configuration is not enabled by default
+cookbook_file "/etc/php5/mods-available/xdebug_autostart.ini" do
+	source "xdebug_autostart.ini"
+	mode 644
+end
+
 execute "reload apache" do
 	command "/etc/init.d/apache2 reload"
 end
