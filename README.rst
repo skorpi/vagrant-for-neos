@@ -27,7 +27,7 @@ The following vagrant plugins are used:
 * vagrant-hostmanager
 * vagrant-omnibus
 
-Use the command ``vagrant install <pluginname>`` to install the plugins
+Use the command ``vagrant plugin install <pluginname>`` to install the plugins
 
 You can use the command ``vagrant plugin list`` to check if they are installed already.
 
