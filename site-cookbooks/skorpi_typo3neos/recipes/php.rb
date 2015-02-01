@@ -9,6 +9,7 @@
 include_recipe "php"
 
 packages=[
+	"php5-gd",
 	"php5-mysql",
 	"php5-curl",
 	"php5-xdebug"
